@@ -1,4 +1,4 @@
-import User from "../mongodb/models/user";
+import User from "../mongodb/models/user.js";
 
 const getAllUsers = async (req, res) => {};
 
