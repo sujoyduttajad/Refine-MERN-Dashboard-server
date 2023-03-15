@@ -5,7 +5,12 @@ const getAllProperties = async (req, res) => {};
 
 const getPropertyDetail = async (req, res) => {};
 
-const createProperty = async (req, res) => {};
+const createProperty = async (req, res) => {
+  const { title, description, propertyType, location, price, photo, email } =
+    req.body;
+
+    // Start a new session
+};
 
 const updateProperty = async (req, res) => {};
 
