@@ -10,11 +10,15 @@ const createProperty = async (req, res) => {
   const { title, description, propertyType, location, price, photo, email } =
     req.body;
 
-    // Start a new session
-    const session = await mongoose.startSession();
-    session.startTransaction();
+  // Start a new session
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-    const user = await User.findOne({ email }).session(session)
+  const user = await User.findOne({ email }).session(session);
+
+  if(!user) throw new Error('User not Found');
+
+  // const photoUrl = ...
 
 };
 
