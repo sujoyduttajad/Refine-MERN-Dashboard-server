@@ -1,5 +1,6 @@
 import User from "../mongodb/models/user.js";
 import Property from "../mongodb/models/property.js";
+import mongoose from "mongoose";
 
 const getAllProperties = async (req, res) => {};
 
@@ -10,6 +11,11 @@ const createProperty = async (req, res) => {
     req.body;
 
     // Start a new session
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    const user = await User.findOne({ email }).session(session)
+
 };
 
 const updateProperty = async (req, res) => {};
