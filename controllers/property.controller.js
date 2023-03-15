@@ -28,7 +28,7 @@ const createProperty = async (req, res) => {
 
   if (!user) throw new Error("User not Found");
 
-  // const photoUrl = ...
+  const photoUrl = await cloudinary.uploader.upload(photo);
 };
 
 const updateProperty = async (req, res) => {};
