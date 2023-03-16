@@ -37,11 +37,15 @@ const createProperty = async (req, res) => {
     location,
     price,
     photo: photoUrl.url,
-    creator: user._id
+    creator: user._id,
   });
-  
-  user.allProperties.push(newProperty._id);
 
+  user.allProperties.push(newProperty._id);
+  await user.save({ session });
+
+  await session.commitTransaction();
+
+  res.status(200).json({ message: "Property created successfully" });
 };
 
 const updateProperty = async (req, res) => {};
