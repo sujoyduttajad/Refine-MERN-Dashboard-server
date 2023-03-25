@@ -17,7 +17,13 @@ const getAllProperties = async (req, res) => {
 
   const query = {}
 
-  
+  if(propertyType !== '') {
+    query.propertyType = propertyType;
+  }
+
+  if(title_like) {
+    query.title = { $regex: title_like, $options: 'i' };
+  }
 
   try {
     const properties = await Property.find({}).limit(req.query._end);
