@@ -13,20 +13,28 @@ cloudinary.config({
 });
 
 const getAllProperties = async (req, res) => {
-  const { _end, _order, _start, _sort, title_like = "", propertyType = "" } = req.query;
+  const {
+    _end,
+    _order,
+    _start,
+    _sort,
+    title_like = "",
+    propertyType = "",
+  } = req.query;
 
-  const query = {}
+  const query = {};
 
-  if(propertyType !== '') {
+  if (propertyType !== "") {
     query.propertyType = propertyType;
   }
 
-  if(title_like) {
-    query.title = { $regex: title_like, $options: 'i' };
+  if (title_like) {
+    query.title = { $regex: title_like, $options: "i" };
   }
 
   try {
-    const properties = await Property.find({}).limit(req.query._end);
+    const count = await Property.countDocuments({ query });
+    const properties = await Property.find(query).limit(req.query._end);
 
     res.status(200).json(properties);
   } catch (error) {
