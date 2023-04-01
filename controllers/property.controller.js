@@ -54,7 +54,7 @@ const getPropertyDetail = async (req, res) => {
     "creator"
   );
 
-  if (propertyExists) res.status(200).json();
+  if (propertyExists) res.status(200).json(propertyExists);
   else {
     res.status(404).json({ message: "Property not found" });
   }
