@@ -37,10 +37,10 @@ const getAllProperties = async (req, res) => {
     const properties = await Property.find(query)
       .limit(_end)
       .skip(_start)
-      .sort({ [_sort]: _order })
+      .sort({ [_sort]: _order });
 
-      res.header('x-total-count', count);
-      res.header('Access-Control-Expose-Headers', 'x-total-count');
+    res.header("x-total-count", count);
+    res.header("Access-Control-Expose-Headers", "x-total-count");
 
     res.status(200).json(properties);
   } catch (error) {
@@ -52,8 +52,16 @@ const getPropertyDetail = async (req, res) => {};
 
 const createProperty = async (req, res) => {
   try {
-    const { title, detailType, description, propertyType, location, price, photo, email } =
-      req.body;
+    const {
+      title,
+      detailType,
+      description,
+      propertyType,
+      location,
+      price,
+      photo,
+      email,
+    } = req.body;
 
     // Start a new session
     const session = await mongoose.startSession();
