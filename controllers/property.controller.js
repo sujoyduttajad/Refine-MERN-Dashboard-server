@@ -64,7 +64,7 @@ const createProperty = async (req, res) => {
   try {
     const {
       title,
-      detailType,
+      // detailType,
       description,
       propertyType,
       location,
@@ -85,7 +85,7 @@ const createProperty = async (req, res) => {
 
     const newProperty = await Property.create({
       title,
-      detailType,
+      // detailType,
       description,
       propertyType,
       location,
