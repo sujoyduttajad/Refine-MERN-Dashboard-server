@@ -120,9 +120,9 @@ const deleteProperty = async (req, res) => {
     session.startTransaction();
     // remove the property
     propertyToDelete.remove({ session });
-    // remove the creator from the property
-    propertyToDelete.creator.allProperties.pull(propertyToDelete);
     // remove the property from the creator
+    propertyToDelete.creator.allProperties.pull(propertyToDelete);
+    // save the updated creator document
     await propertyToDelete.creator.save({ session });
     await session.commitTransaction();
 
