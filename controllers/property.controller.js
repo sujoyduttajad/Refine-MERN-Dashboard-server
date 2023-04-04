@@ -135,7 +135,7 @@ const deleteProperty = async (req, res) => {
     // await session.commitTransaction();
 
     try {
-      await propertyToDelete.remove(session);
+      await propertyToDelete.remove({session});
 
       propertyToDelete.creator.allProperties.pull(propertyToDelete);
       await propertyToDelete.creator.save({ session });
