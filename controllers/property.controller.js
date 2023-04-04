@@ -108,30 +108,45 @@ const createProperty = async (req, res) => {
 const updateProperty = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, propertyType, location, price, photo } = req.body;
-  } catch (error) {
-    
-  }
+    const { title, description, propertyType, location, price, photo } =
+      req.body;
+  } catch (error) {}
 };
 
 const deleteProperty = async (req, res) => {
   try {
     const { id } = req.params;
-    const propertyToDelete = await Property.findById({
-      _id: id,
-    }).populate("creator");
+    const propertyToDelete = await Property.findById({ _id: id }).populate(
+      "creator"
+    );
 
-    if (!propertyToDelete) throw new Error("Property not found");
+    if (!propertyToDelete) {
+      return res.status(404).json({ message: "Property not found" });
+    }
 
     const session = await mongoose.startSession();
     session.startTransaction();
-    // remove the property
-    propertyToDelete.remove({ session });
-    // remove the property from the creator
-    propertyToDelete.creator.allProperties.pull(propertyToDelete);
-    // save the updated creator document
-    await propertyToDelete.creator.save({ session });
-    await session.commitTransaction();
+
+    // propertyToDelete.remove(session);
+
+    // propertyToDelete.creator.allProperties.pull(propertyToDelete);
+
+    // await propertyToDelete.creator.save({session});
+    // await session.commitTransaction();
+
+    try {
+      await propertyToDelete.remove(session);
+
+      propertyToDelete.creator.allProperties.pull(propertyToDelete);
+      await propertyToDelete.creator.save({ session });
+
+      await session.commitTransaction();
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
 
     res.status(200).json({ message: "Property deleted successfully" });
   } catch (error) {
