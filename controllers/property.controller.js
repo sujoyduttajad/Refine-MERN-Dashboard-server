@@ -105,7 +105,13 @@ const createProperty = async (req, res) => {
   }
 };
 
-const updateProperty = async (req, res) => {};
+const updateProperty = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+};
 
 const deleteProperty = async (req, res) => {
   try {
@@ -118,7 +124,7 @@ const deleteProperty = async (req, res) => {
 
     const session = await mongoose.startSession();
     session.startTransaction();
-    // remove the property2
+    // remove the property
     propertyToDelete.remove({ session });
     // remove the property from the creator
     propertyToDelete.creator.allProperties.pull(propertyToDelete);
