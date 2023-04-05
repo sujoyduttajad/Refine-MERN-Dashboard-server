@@ -110,43 +110,57 @@ const updateProperty = async (req, res) => {
     const { id } = req.params;
     const { title, description, propertyType, location, price, photo } =
       req.body;
-  } catch (error) {}
+
+    const photoUrl = await cloudinary.uploader.upload(photo);
+
+    await Property.findByIdAndUpdate(
+      { _id: id },
+      {
+        title,
+        // detailType,
+        description,
+        propertyType,
+        location,
+        price,
+        photo: photoUrl.url || photo,
+      }
+    );
+    res.status(200).json({ message: "Property updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 const deleteProperty = async (req, res) => {
+  let propertyToDelete;
   try {
     const { id } = req.params;
-    const propertyToDelete = await Property.findById({ _id: id }).populate(
-      "creator"
-    );
+    // propertyToDelete = await Property.findById({ _id: id }).populate(
+    //   "creator"
+    // );
+    propertyToDelete = await Property.findById({ _id: id });
 
     if (!propertyToDelete) {
       return res.status(404).json({ message: "Property not found" });
     }
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
+    // const session = await mongoose.startSession();
+    // session.startTransaction();
+    // try {
+    //   await propertyToDelete.remove({ session });
 
-    // propertyToDelete.remove(session);
+    //   propertyToDelete.creator.allProperties.pull(propertyToDelete);
+    //   await propertyToDelete.creator.save({ session });
 
-    // propertyToDelete.creator.allProperties.pull(propertyToDelete);
+    //   await session.commitTransaction();
+    // } catch (error) {
+    //   await session.abortTransaction();
+    //   throw error;
+    // } finally {
+    //   session.endSession();
+    // }
 
-    // await propertyToDelete.creator.save({session});
-    // await session.commitTransaction();
-
-    try {
-      await propertyToDelete.remove({session});
-
-      propertyToDelete.creator.allProperties.pull(propertyToDelete);
-      await propertyToDelete.creator.save({ session });
-
-      await session.commitTransaction();
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      session.endSession();
-    }
+    propertyToDelete.deleteOne();
 
     res.status(200).json({ message: "Property deleted successfully" });
   } catch (error) {
