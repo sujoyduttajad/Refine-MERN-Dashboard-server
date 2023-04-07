@@ -1,5 +1,8 @@
 import User from "../mongodb/models/user.js";
 
+/* 
+  Fetches all the users details who logged in via the app
+*/
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({}).limit(req.query._end);
@@ -9,6 +12,9 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+/* 
+  this block of code creates a new user
+*/
 const createUser = async (req, res) => {
   try {
     const { name, email, avatar } = req.body;
@@ -28,6 +34,9 @@ const createUser = async (req, res) => {
   }
 };
 
+/* 
+
+*/
 const getUserInfoByID = async (req, res) => {};
 
 export { getAllUsers, getUserInfoByID, createUser };
