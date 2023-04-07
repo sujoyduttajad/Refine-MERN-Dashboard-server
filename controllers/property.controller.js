@@ -12,6 +12,14 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/* 
+  The code defines an async function getAllProperties that fetches 
+  properties from a database based on query parameters 
+  such as _end, _order, _start, _sort, title_like, and propertyType. 
+  It retrieves the count of matching documents and the properties data 
+  from the database, sets response headers, and sends a JSON response 
+  with the fetched properties data. If an error occurs, it sends an error response.
+*/
 const getAllProperties = async (req, res) => {
   const {
     _end,
@@ -48,6 +56,9 @@ const getAllProperties = async (req, res) => {
   }
 };
 
+/* 
+  This code block fetches the Property details of the given property
+*/
 const getPropertyDetail = async (req, res) => {
   const { id } = req.params;
   const propertyExists = await Property.findOne({ _id: id }).populate(
@@ -105,6 +116,9 @@ const createProperty = async (req, res) => {
   }
 };
 
+/* 
+  This code block edits the given property
+*/
 const updateProperty = async (req, res) => {
   try {
     const { id } = req.params;
@@ -131,6 +145,9 @@ const updateProperty = async (req, res) => {
   }
 };
 
+/* 
+  This code block deletes a given property
+*/
 const deleteProperty = async (req, res) => {
   let propertyToDelete;
   try {
